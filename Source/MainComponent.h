@@ -38,6 +38,8 @@ private:
     
     JUCEApplication *juceApplication;
     
+    Image backgroundImage;
+    
     ScopedPointer <Label> infoLabel;
     ScopedPointer <TextButton> installButton, closeButton, cancelButton;
     

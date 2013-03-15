@@ -7,6 +7,7 @@
 */
 
 #include "MainComponent.h"
+#include "BinaryData.h"
 
 
 //==============================================================================
@@ -14,6 +15,9 @@ MainContentComponent::MainContentComponent (JUCEApplication *juceApplication_)
                                             :   Thread ("installerThread"),
                                                 juceApplication (juceApplication_)
 {
+    //load binary data into Image
+    backgroundImage = ImageCache::getFromMemory(BinaryData::background_png, BinaryData::background_pngSize);
+    
     addAndMakeVisible (infoLabel = new Label());
     infoLabel->setJustificationType(Justification::centred);
     infoLabel->setText(translate("This application will install the AlphaLive Audio Library and Demo Project onto your computer. Please make sure that you have installed AlphaLive before running this installer. Press 'Install' to begin."), 
@@ -28,7 +32,7 @@ MainContentComponent::MainContentComponent (JUCEApplication *juceApplication_)
     addChildComponent (cancelButton = new TextButton(translate("Cancel")));
     cancelButton->addListener(this);
     
-    setSize (500, 400);
+    setSize (backgroundImage.getWidth(), backgroundImage.getHeight());
     LookAndFeel::getDefaultLookAndFeel().setUsingNativeAlertWindows(true);
 }
 
@@ -38,7 +42,7 @@ MainContentComponent::~MainContentComponent()
 
 void MainContentComponent::paint (Graphics& g)
 {
-    
+    g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), 0, 0, backgroundImage.getWidth(), backgroundImage.getHeight());
 }
 
 void MainContentComponent::resized()
