@@ -39,7 +39,7 @@ private:
     JUCEApplication *juceApplication;
     
     ScopedPointer <Label> infoLabel;
-    ScopedPointer <TextButton> installButton, closeButton;
+    ScopedPointer <TextButton> installButton, closeButton, cancelButton;
     
     File alphaLiveDirectory;
 };
