@@ -23,7 +23,7 @@ class MainContentComponent   :  public Component,
 {
 public:
     //==============================================================================
-    MainContentComponent();
+    MainContentComponent (JUCEApplication *juceApplication_);
     ~MainContentComponent();
 
     void paint (Graphics&);
@@ -36,8 +36,10 @@ private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
     
+    JUCEApplication *juceApplication;
+    
     ScopedPointer <Label> infoLabel;
-    ScopedPointer <TextButton> installButton;
+    ScopedPointer <TextButton> installButton, closeButton;
     
     File alphaLiveDirectory;
 };

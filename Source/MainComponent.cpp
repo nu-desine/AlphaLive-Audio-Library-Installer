@@ -10,14 +10,20 @@
 
 
 //==============================================================================
-MainContentComponent::MainContentComponent() : Thread ("installerThread")
+MainContentComponent::MainContentComponent (JUCEApplication *juceApplication_) 
+                                            :   Thread ("installerThread"),
+                                                juceApplication (juceApplication_)
 {
     addAndMakeVisible (infoLabel = new Label());
     infoLabel->setJustificationType(Justification::centred);
     infoLabel->setText(translate("This application will install the AlphaLive Audio Library and Demo Project onto your computer. Please make sure that you have installed AlphaLive before running this installer. Press 'Install' to begin."), 
                        dontSendNotification);
+    
     addAndMakeVisible (installButton = new TextButton(translate("Install")));
     installButton->addListener(this);
+    
+    addAndMakeVisible (closeButton = new TextButton(translate("Close")));
+    closeButton->addListener(this);
     
     setSize (500, 400);
     LookAndFeel::getDefaultLookAndFeel().setUsingNativeAlertWindows(true);
@@ -36,6 +42,7 @@ void MainContentComponent::resized()
 {
     infoLabel->setBounds(0, 0, getWidth(), getHeight()-40);
     installButton->setBounds((getWidth()/2)-25, getHeight()-30, 50, 20);
+    closeButton->setBounds((getWidth()/2)-75, getHeight()-30, 50, 20);
 }
 
 void MainContentComponent::buttonClicked (Button *button)
@@ -98,6 +105,11 @@ void MainContentComponent::buttonClicked (Button *button)
         {
             startThread();
         }
+    }
+    
+    else if (button == closeButton)
+    {
+        juceApplication->quit();
     }
 }
 

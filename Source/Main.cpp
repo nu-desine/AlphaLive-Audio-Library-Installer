@@ -29,7 +29,7 @@ public:
     {
         // This method is where you should put your application's initialisation code..
 
-        mainWindow = new MainWindow();
+        mainWindow = new MainWindow (this);
     }
 
     void shutdown()
@@ -44,7 +44,9 @@ public:
     {
         // This is called when the app is being asked to quit: you can ignore this
         // request and let the app carry on running, or call quit() to allow the app to close.
-        quit();
+        
+        //Don't allow the application to be quit here (such as cmd-q)
+        // quit();
     }
 
     void anotherInstanceStarted (const String& commandLine)
@@ -62,11 +64,11 @@ public:
     class MainWindow    : public DocumentWindow
     {
     public:
-        MainWindow()  : DocumentWindow ("MainWindow",
-                                        Colours::lightgrey,
-                                        5)
+        MainWindow (JUCEApplication *juceApplication)  : DocumentWindow ("AlphaLive Audio Library Installer",
+                                                                         Colours::lightgrey,
+                                                                         1)
         {
-            setContentOwned (new MainContentComponent(), true);
+            setContentOwned (new MainContentComponent (juceApplication), true);
 
             centreWithSize (getWidth(), getHeight());
             
