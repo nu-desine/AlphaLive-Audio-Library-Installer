@@ -120,65 +120,75 @@ void MainContentComponent::run()
     
     File dataToCopy (File::getSpecialLocation (File::currentApplicationFile).getParentDirectory().getParentDirectory().getFullPathName() + File::separatorString + "Data");
     
-    // With the audio library, don't just copy the entire directories (like done below with the Demo Project directory),
-    // incase the user has already installed it and added their own files. Simply copying the directory would replace
-    // any new files, so must copy each file individually.
-    
-    Array<File> filesToCopy;
-    File audioDir (dataToCopy.getFullPathName() + File::separatorString + "Audio Library");
-    audioDir.findChildFiles(filesToCopy, 2, true);
-    
-    for (int i = 0; i < filesToCopy.size(); i++)
-    {           
-        File newFile (audioLibraryDir.getFullPathName() + 
-                      File::separatorString + 
-                      filesToCopy[i].getRelativePathFrom(audioDir));
+    if (dataToCopy.exists())
+    {
         
-        // Only copy the file if it doesn't already exist
-        if (! newFile.exists())
+        // With the audio library, don't just copy the entire directories (like done below with the Demo Project directory),
+        // incase the user has already installed it and added their own files. Simply copying the directory would replace
+        // any new files, so must copy each file individually.
+        
+        Array<File> filesToCopy;
+        File audioDir (dataToCopy.getFullPathName() + File::separatorString + "Audio Library");
+        audioDir.findChildFiles(filesToCopy, 2, true);
+        
+        for (int i = 0; i < filesToCopy.size(); i++)
+        {           
+            File newFile (audioLibraryDir.getFullPathName() + 
+                          File::separatorString + 
+                          filesToCopy[i].getRelativePathFrom(audioDir));
+            
+            // Only copy the file if it doesn't already exist
+            if (! newFile.exists())
+            {
+                {
+                    const MessageManagerLock mmLock;
+                    String string (translate("Extracting files...") + "\n" + newFile.getFileName());
+                    infoLabel->setText(string, dontSendNotification);
+                }
+                
+                // If the files parent directory doesn't exist, create it, otherwise the file won't copy.
+                
+                bool doesParentExist = newFile.getParentDirectory().isDirectory();
+                if (doesParentExist == false)
+                {
+                    File parentDir (newFile.getParentDirectory());
+                    parentDir.createDirectory();
+                }
+                
+                filesToCopy[i].copyFileTo(newFile);
+                
+            }
+        }
+        
+        
+        File demoProjDir (dataToCopy.getFullPathName() + File::separatorString + "Demo Project");
+        File newDemoProjDir (alphaLiveDirectory.getFullPathName() + File::separatorString + "Demo Project");
+        
+        // Only copy the Demo Project if it doesn't already exist, as if the user already has it they
+        // may have edited it, and copying it would overwrite their changes.
+        // Should I be copy the files individually like done with the Audio Library above?
+        
+        if (File (newDemoProjDir.getFullPathName() + File::separatorString + "AlphaPresets.alphalive").exists() == false)
         {
             {
                 const MessageManagerLock mmLock;
-                String string (translate("Extracting files...") + "\n" + newFile.getFileName());
-                infoLabel->setText(string, dontSendNotification);
+                infoLabel->setText(translate("Extracting Demo Project files..."), dontSendNotification);
             }
             
-            // If the files parent directory doesn't exist, create it, otherwise the file won't copy.
-            
-            bool doesParentExist = newFile.getParentDirectory().isDirectory();
-            if (doesParentExist == false)
-            {
-                File parentDir (newFile.getParentDirectory());
-                parentDir.createDirectory();
-            }
-            
-            filesToCopy[i].copyFileTo(newFile);
-            
-        }
-    }
-    
-    
-    File demoProjDir (dataToCopy.getFullPathName() + File::separatorString + "Demo Project");
-    File newDemoProjDir (alphaLiveDirectory.getFullPathName() + File::separatorString + "Demo Project");
-    
-    // Only copy the Demo Project if it doesn't already exist, as if the user already has it they
-    // may have edited it, and copying it would overwrite their changes.
-    // Should I be copy the files individually like done with the Audio Library above?
-    
-    if (File (newDemoProjDir.getFullPathName() + File::separatorString + "AlphaPresets.alphalive").exists() == false)
-    {
-        {
-            const MessageManagerLock mmLock;
-            infoLabel->setText(translate("Extracting Demo Project files..."), dontSendNotification);
+            demoProjDir.copyDirectoryTo(newDemoProjDir);
         }
         
-        demoProjDir.copyDirectoryTo(newDemoProjDir);
+        
+        {
+            const MessageManagerLock mmLock;
+            infoLabel->setText(translate("Installation complete!"), dontSendNotification);
+        }
     }
-    
-    
+    else
     {
-        const MessageManagerLock mmLock;
-        infoLabel->setText(translate("Installation complete!"), dontSendNotification);
+        AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
+                                          translate("Error!"),
+                                          translate("The files that need installing appear to be missing. If this installer was supplied to you on a CD, please run it directly from the CD. If you downloaded this installer, please run it directly from the downloaded folder."));
     }
     
 }
