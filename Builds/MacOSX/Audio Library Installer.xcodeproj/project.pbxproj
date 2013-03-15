@@ -1107,9 +1107,9 @@
 		283ED69ED1CA9BEDEA9B66F3 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				654DB747A995FAFCE9C9A651 /* MainComponent.cpp */,
-				C9759B67C2EDA96E780A3138 /* MainComponent.h */,
 				98B254CB0A42791E705A8808 /* Main.cpp */,
+				C9759B67C2EDA96E780A3138 /* MainComponent.h */,
+				654DB747A995FAFCE9C9A651 /* MainComponent.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
