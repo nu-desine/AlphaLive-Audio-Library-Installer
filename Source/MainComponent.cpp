@@ -9,6 +9,12 @@
 #include "MainComponent.h"
 #include "BinaryData.h"
 
+//Dimensions for centre text box
+#define BOX_X getWidth()/10
+#define BOX_Y getHeight()/6
+#define BOX_W (getWidth()/10)*8
+#define BOX_H (getHeight()/6)*3
+
 
 //==============================================================================
 MainContentComponent::MainContentComponent (JUCEApplication *juceApplication_) 
@@ -25,14 +31,20 @@ MainContentComponent::MainContentComponent (JUCEApplication *juceApplication_)
     
     addAndMakeVisible (installButton = new TextButton(translate("Install")));
     installButton->addListener(this);
+    installButton->setColour(TextButton::buttonColourId, AlphaColours::verydarkgrey.withAlpha(0.7f));
     
     addAndMakeVisible (closeButton = new TextButton(translate("Close")));
     closeButton->addListener(this);
+    closeButton->setColour(TextButton::buttonColourId, AlphaColours::verydarkgrey.withAlpha(0.7f));
     
     addChildComponent (cancelButton = new TextButton(translate("Cancel")));
     cancelButton->addListener(this);
+    cancelButton->setColour(TextButton::buttonColourId, AlphaColours::verydarkgrey.withAlpha(0.7f));
     
     setSize (backgroundImage.getWidth(), backgroundImage.getHeight());
+    
+    //Look-and-feel stuff
+    LookAndFeel::setDefaultLookAndFeel (&lookAndFeel);
     LookAndFeel::getDefaultLookAndFeel().setUsingNativeAlertWindows(true);
 }
 
@@ -43,14 +55,35 @@ MainContentComponent::~MainContentComponent()
 void MainContentComponent::paint (Graphics& g)
 {
     g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), 0, 0, backgroundImage.getWidth(), backgroundImage.getHeight());
+    
+    g.setColour(Colours::darkgrey.withAlpha(0.7f));
+    g.fillRoundedRectangle(BOX_X, BOX_Y, BOX_W, BOX_H, 10);
+    
+    g.setColour(Colours::grey.withAlpha(0.6f));
+    int border = 5;
+    g.fillRoundedRectangle(BOX_X+border, 
+                           BOX_Y+border, 
+                           BOX_W-(border*2), 
+                           BOX_H-(border*2), 
+                           10);
 }
 
 void MainContentComponent::resized()
 {
-    infoLabel->setBounds(0, 0, getWidth(), getHeight()-40);
-    installButton->setBounds((getWidth()/2)-25, getHeight()-30, 50, 20);
-    closeButton->setBounds((getWidth()/2)-75, getHeight()-30, 50, 20);
-    cancelButton->setBounds((getWidth()/2)-75, getHeight()-30, 50, 20);
+    infoLabel->setBounds(BOX_X, BOX_Y, BOX_W, BOX_H);
+    installButton->setBounds((BOX_X + BOX_W) - 105,
+                            (BOX_Y + BOX_H) - 55,
+                            45,
+                            45);
+    closeButton->setBounds((BOX_X + BOX_W) - 55,
+                           (BOX_Y + BOX_H) - 55,
+                           45,
+                           45);
+    cancelButton->setBounds((BOX_X + BOX_W) - 55,
+                           (BOX_Y + BOX_H) - 55,
+                           45,
+                           45);
+    
 }
 
 void MainContentComponent::buttonClicked (Button *button)

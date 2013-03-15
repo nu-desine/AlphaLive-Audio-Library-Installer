@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		04663F55AE121BA34346CFA2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A60E41E9964AB7EA7DF1A426 /* WebKit.framework */; };
 		0CF86B9516F3815400E7803D /* BinaryData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CF86B9316F3815400E7803D /* BinaryData.cpp */; };
+		0CF86BA516F397FA00E7803D /* AlphaLiveLookandFeel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0CF86BA316F397FA00E7803D /* AlphaLiveLookandFeel.cpp */; };
 		1578BBDCEDFA5EC68EFA758E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BB0D9C466183E2ECD66A1B5 /* OpenGL.framework */; };
 		1A793419F524F6045B7D8816 /* juce_audio_devices.mm in Sources */ = {isa = PBXBuildFile; fileRef = 965D7C6201D5147439CD2AD5 /* juce_audio_devices.mm */; };
 		25A7204222A5A753A789C472 /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98B254CB0A42791E705A8808 /* Main.cpp */; };
@@ -89,6 +90,8 @@
 		0CBAFF67B2B1A676BFBCFA4C /* juce_AudioFormatManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_AudioFormatManager.h; path = ../../JuceLibraryCode/modules/juce_audio_formats/format/juce_AudioFormatManager.h; sourceTree = SOURCE_ROOT; };
 		0CF86B9316F3815400E7803D /* BinaryData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BinaryData.cpp; path = ../../Source/BinaryData.cpp; sourceTree = "<group>"; };
 		0CF86B9416F3815400E7803D /* BinaryData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BinaryData.h; path = ../../Source/BinaryData.h; sourceTree = "<group>"; };
+		0CF86BA316F397FA00E7803D /* AlphaLiveLookandFeel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AlphaLiveLookandFeel.cpp; path = ../../Source/AlphaLiveLookandFeel.cpp; sourceTree = "<group>"; };
+		0CF86BA416F397FA00E7803D /* AlphaLiveLookandFeel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlphaLiveLookandFeel.h; path = ../../Source/AlphaLiveLookandFeel.h; sourceTree = "<group>"; };
 		0D9AC604BD64AED6A5AF7AE3 /* juce_win32_WASAPI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_win32_WASAPI.cpp; path = ../../JuceLibraryCode/modules/juce_audio_devices/native/juce_win32_WASAPI.cpp; sourceTree = SOURCE_ROOT; };
 		0DEF4FE9ED9ECD7329215AC8 /* juce_win32_ComSmartPtr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_win32_ComSmartPtr.h; path = ../../JuceLibraryCode/modules/juce_core/native/juce_win32_ComSmartPtr.h; sourceTree = SOURCE_ROOT; };
 		0E6AFE499CB98E14E7A73B27 /* juce_DragAndDropContainer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_DragAndDropContainer.cpp; path = ../../JuceLibraryCode/modules/juce_gui_basics/mouse/juce_DragAndDropContainer.cpp; sourceTree = SOURCE_ROOT; };
@@ -1115,6 +1118,8 @@
 				654DB747A995FAFCE9C9A651 /* MainComponent.cpp */,
 				0CF86B9416F3815400E7803D /* BinaryData.h */,
 				0CF86B9316F3815400E7803D /* BinaryData.cpp */,
+				0CF86BA416F397FA00E7803D /* AlphaLiveLookandFeel.h */,
+				0CF86BA316F397FA00E7803D /* AlphaLiveLookandFeel.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -2640,6 +2645,7 @@
 				DDAFE862DC46CF38471F27FC /* juce_opengl.mm in Sources */,
 				CB6F9544C5AA65D81ECE6EE3 /* juce_video.mm in Sources */,
 				0CF86B9516F3815400E7803D /* BinaryData.cpp in Sources */,
+				0CF86BA516F397FA00E7803D /* AlphaLiveLookandFeel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

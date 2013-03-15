@@ -10,6 +10,7 @@
 #define __MAINCOMPONENT_H_B87CFFDB__
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "AlphaLiveLookandFeel.h"
 
 
 //==============================================================================
@@ -38,6 +39,7 @@ private:
     
     JUCEApplication *juceApplication;
     
+    AlphaLiveLookandFeel lookAndFeel;
     Image backgroundImage;
     
     ScopedPointer <Label> infoLabel;
