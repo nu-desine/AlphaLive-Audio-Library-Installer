@@ -41,6 +41,9 @@ MainContentComponent::MainContentComponent (JUCEApplication *juceApplication_)
     cancelButton->addListener(this);
     cancelButton->setColour(TextButton::buttonColourId, AlphaColours::verydarkgrey.withAlpha(0.7f));
     
+    progress = 0;
+    addAndMakeVisible (progressBar = new ProgressBar (progress));
+    
     setSize (backgroundImage.getWidth(), backgroundImage.getHeight());
     
     //Look-and-feel stuff
@@ -83,6 +86,8 @@ void MainContentComponent::resized()
                            (BOX_Y + BOX_H) - 55,
                            45,
                            45);
+    
+    progressBar->setBounds((getWidth()/2)-50, (BOX_Y + BOX_H) - 40, 100, 20);
     
 }
 
@@ -174,6 +179,8 @@ void MainContentComponent::run()
         closeButton->setVisible(false);
         installButton->setVisible(false);
         cancelButton->setVisible(true);
+        
+        progressBar->setVisible(true);
     }
     
     bool installationCancelled = false;
@@ -197,6 +204,15 @@ void MainContentComponent::run()
         
         if (dataToCopy.exists())
         {
+            int totalSize = 0;
+            int extractedSize = 0;
+            
+            // Work out the total size of the files being copied,
+            // so we can work out a percentage for the progress bar.
+            Array<File> allFiles;
+            dataToCopy.findChildFiles(allFiles, 3, true);
+            for (int i = 0; i < allFiles.size(); i++)
+                totalSize += allFiles[i].getSize();
             
             // With the audio library, don't just copy the entire directories (like done below with the Demo Project directory),
             // incase the user has already installed it and added their own files. Simply copying the directory would replace
@@ -207,7 +223,12 @@ void MainContentComponent::run()
             audioDir.findChildFiles(filesToCopy, 2, true);
             
             for (int i = 0; i < filesToCopy.size(); i++)
-            {           
+            {
+                // Increase the extracted size to we can work out the current progress bar value
+                extractedSize += filesToCopy[i].getSize();
+                // Get progress to a value between 0 and 1 (NOT 0 and 100) to update the progress bar correctly
+                progress = ((extractedSize * 0.0001)/(totalSize * 0.0001));
+                
                 File newFile (audioLibraryDir.getFullPathName() + 
                               File::separatorString + 
                               filesToCopy[i].getRelativePathFrom(audioDir));
@@ -250,6 +271,11 @@ void MainContentComponent::run()
             File demoProjDir (dataToCopy.getFullPathName() + File::separatorString + "Demo Project");
             File newDemoProjDir (alphaLiveDirectory.getFullPathName() + File::separatorString + "Demo Project");
             
+            // Increase the extracted size to we can work out the current progress bar value
+            extractedSize += demoProjDir.getSize();
+            // Get progress to a value between 0 and 1 (NOT 0 and 100) to update the progress bar correctly
+            progress = (extractedSize * 0.0001)/(totalSize * 0.0001);
+            
             // Only copy the Demo Project if it doesn't already exist, as if the user already has it they
             // may have edited it, and copying it would overwrite their changes.
             // Should I be copy the files individually like done with the Audio Library above?
@@ -285,6 +311,7 @@ void MainContentComponent::run()
         closeButton->setVisible(true);
         installButton->setVisible(true);
         cancelButton->setVisible(false);
+        progressBar->setVisible(false);
     }
     else
     {
@@ -294,6 +321,7 @@ void MainContentComponent::run()
         closeButton->setVisible(true);
         installButton->setVisible(false);
         cancelButton->setVisible(false);
+        progressBar->setVisible(false);
         
     }
     

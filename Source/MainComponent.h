@@ -46,6 +46,9 @@ private:
     ScopedPointer <TextButton> installButton, closeButton, cancelButton;
     
     File alphaLiveDirectory;
+    
+    ScopedPointer <ProgressBar> progressBar;
+    double progress;
 };
 
 
