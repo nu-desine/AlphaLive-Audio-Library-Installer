@@ -42,7 +42,9 @@ MainContentComponent::MainContentComponent (JUCEApplication *juceApplication_)
     cancelButton->setColour(TextButton::buttonColourId, AlphaColours::verydarkgrey.withAlpha(0.7f));
     
     progress = 0;
-    addAndMakeVisible (progressBar = new ProgressBar (progress));
+    addChildComponent (progressBar = new ProgressBar (progress));
+    progressBar->setColour (ProgressBar::backgroundColourId, AlphaColours::verydarkgrey.withAlpha(1.0f));
+    progressBar->setColour (ProgressBar::foregroundColourId, Colours::grey);
     
     setSize (backgroundImage.getWidth(), backgroundImage.getHeight());
     
@@ -87,7 +89,7 @@ void MainContentComponent::resized()
                            45,
                            45);
     
-    progressBar->setBounds((getWidth()/2)-50, (BOX_Y + BOX_H) - 40, 100, 20);
+    progressBar->setBounds((getWidth()/2)-75, (BOX_Y + BOX_H) - 40, 150, 20);
     
 }
 
@@ -213,6 +215,7 @@ void MainContentComponent::run()
             dataToCopy.findChildFiles(allFiles, 3, true);
             for (int i = 0; i < allFiles.size(); i++)
                 totalSize += allFiles[i].getSize();
+            allFiles.clear();
             
             // With the audio library, don't just copy the entire directories (like done below with the Demo Project directory),
             // incase the user has already installed it and added their own files. Simply copying the directory would replace
@@ -271,11 +274,6 @@ void MainContentComponent::run()
             File demoProjDir (dataToCopy.getFullPathName() + File::separatorString + "Demo Project");
             File newDemoProjDir (alphaLiveDirectory.getFullPathName() + File::separatorString + "Demo Project");
             
-            // Increase the extracted size to we can work out the current progress bar value
-            extractedSize += demoProjDir.getSize();
-            // Get progress to a value between 0 and 1 (NOT 0 and 100) to update the progress bar correctly
-            progress = (extractedSize * 0.0001)/(totalSize * 0.0001);
-            
             // Only copy the Demo Project if it doesn't already exist, as if the user already has it they
             // may have edited it, and copying it would overwrite their changes.
             // Should I be copy the files individually like done with the Audio Library above?
@@ -289,6 +287,19 @@ void MainContentComponent::run()
                 
                 demoProjDir.copyDirectoryTo(newDemoProjDir);
             }
+            
+            
+            demoProjDir.findChildFiles(allFiles, 3, true);
+            for (int i = 0; i < allFiles.size(); i++)
+            {
+                // Increase the extracted size to we can work out the current progress bar value
+                extractedSize += allFiles[i].getSize();
+                // Get progress to a value between 0 and 1 (NOT 0 and 100) to update the progress bar correctly
+                progress = (extractedSize * 0.0001)/(totalSize * 0.0001);
+                //sleep the thread here so the progress bar GUI is updated in a noticable manner
+                wait(2);
+            }
+            
             
             
         }
