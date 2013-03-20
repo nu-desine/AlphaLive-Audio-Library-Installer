@@ -22,14 +22,14 @@ public:
 
     const String getApplicationName()       { return ProjectInfo::projectName; }
     const String getApplicationVersion()    { return ProjectInfo::versionString; }
-    bool moreThanOneInstanceAllowed()       { return true; }
+    bool moreThanOneInstanceAllowed()       { return false; }
 
     //==============================================================================
     void initialise (const String& commandLine)
     {
         // This method is where you should put your application's initialisation code..
 
-        mainWindow = new MainWindow (this);
+        mainWindow = new MainWindow();
     }
 
     void shutdown()
@@ -64,11 +64,11 @@ public:
     class MainWindow    : public DocumentWindow
     {
     public:
-        MainWindow (JUCEApplication *juceApplication)  : DocumentWindow ("AlphaLive Audio Library Installer",
-                                                                         Colours::lightgrey,
-                                                                         1)
+        MainWindow()  : DocumentWindow ("AlphaLive Audio Library Installer",
+                                        Colours::lightgrey,
+                                        1)
         {
-            setContentOwned (new MainContentComponent (juceApplication), true);
+            setContentOwned (new MainContentComponent(), true);
 
             centreWithSize (getWidth(), getHeight());
             

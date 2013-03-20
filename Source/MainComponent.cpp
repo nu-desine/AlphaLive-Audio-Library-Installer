@@ -17,9 +17,7 @@
 
 
 //==============================================================================
-MainContentComponent::MainContentComponent (JUCEApplication *juceApplication_) 
-                                            :   Thread ("installerThread"),
-                                                juceApplication (juceApplication_)
+MainContentComponent::MainContentComponent () : Thread ("installerThread")
 {
     //load binary data into Image
     backgroundImage = ImageCache::getFromMemory(BinaryData::background_png, BinaryData::background_pngSize);
@@ -157,7 +155,7 @@ void MainContentComponent::buttonClicked (Button *button)
     
     else if (button == closeButton)
     {
-        juceApplication->quit();
+        JUCEApplication::quit();
     }
     
     else if (button == cancelButton)
