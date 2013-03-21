@@ -7,6 +7,7 @@ AlphaLive Audio Library Installer has been programmed using the [JUCE](http://ww
 ## Requirements ##
 
 For this application to correctly work the files that need to be installed must be in the following file hierarchy from the application file:
+
 +  Audio Library - "../Data/Audio Library/"
 +  Demo Project - "../Data/Demo Project/"
 
