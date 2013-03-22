@@ -328,6 +328,8 @@ void MainContentComponent::run()
             AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
                                               translate("Error!"),
                                               translate("The files that need installing appear to be missing. If this installer was supplied to you on a CD, please run it directly from the CD. If you downloaded this installer, please run it directly from the downloaded folder."));
+
+			installationCancelled = true;
         }
         
         
