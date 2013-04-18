@@ -292,7 +292,11 @@ void MainContentComponent::run()
             }
             
             File demoProjDir (dataToCopy.getFullPathName() + File::separatorString + "Demo Project");
-            File newDemoProjDir (alphaLiveDirectory.getFullPathName() + File::separatorString + "Demo Project");
+            File newDemoProjDir (File::getSpecialLocation (File::userDocumentsDirectory).getFullPathName() + 
+                                 File::separatorString +
+                                 "AlphaLive Projects" + 
+                                 File::separatorString +
+                                 "Demo Project");
             
             // Only copy the Demo Project if it doesn't already exist, as if the user already has it they
             // may have edited it, and copying it would overwrite their changes.
