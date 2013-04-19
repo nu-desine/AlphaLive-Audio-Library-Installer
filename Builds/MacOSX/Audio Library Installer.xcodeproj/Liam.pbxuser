@@ -1,0 +1,113 @@
+// !$*UTF8*$!
+{
+	0CEAC2F417204CB200E9AEB8 /* Audio Library Installer */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = "Audio Library Installer";
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	0CEAC31517204CD200E9AEB8 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	0CEAC31617204CD200E9AEB8 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	0CEAC31B1720568300E9AEB8 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 654DB747A995FAFCE9C9A651 /* MainComponent.cpp */;
+	};
+	0CEAC31C1720568300E9AEB8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 654DB747A995FAFCE9C9A651 /* MainComponent.cpp */;
+		name = "MainComponent.cpp: 319";
+		rLen = 0;
+		rLoc = 13510;
+		rType = 0;
+		vrLen = 2244;
+		vrLoc = 13030;
+	};
+	654DB747A995FAFCE9C9A651 /* MainComponent.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1979, 4758}}";
+			sepNavSelRange = "{13510, 0}";
+			sepNavVisRange = "{13030, 2244}";
+		};
+	};
+	71398689F7275B02C4DD9E87 /* Project object */ = {
+		activeBuildConfigurationName = Release;
+		activeExecutable = 0CEAC2F417204CB200E9AEB8 /* Audio Library Installer */;
+		activeTarget = FE23EAAB50F76481C7E7E373 /* Audio Library Installer */;
+		codeSenseManager = 0CEAC31617204CD200E9AEB8 /* Code sense */;
+		executables = (
+			0CEAC2F417204CB200E9AEB8 /* Audio Library Installer */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					772,
+					20,
+					48.16259765625,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 387992754;
+			PBXWorkspaceStateSaveDate = 387992754;
+		};
+		perUserProjectItems = {
+			0CEAC31B1720568300E9AEB8 /* PBXBookmark */ = 0CEAC31B1720568300E9AEB8 /* PBXBookmark */;
+			0CEAC31C1720568300E9AEB8 /* PBXTextBookmark */ = 0CEAC31C1720568300E9AEB8 /* PBXTextBookmark */;
+		};
+		sourceControlManager = 0CEAC31517204CD200E9AEB8 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	FE23EAAB50F76481C7E7E373 /* Audio Library Installer */ = {
+		activeExec = 0;
+		executables = (
+			0CEAC2F417204CB200E9AEB8 /* Audio Library Installer */,
+		);
+	};
+}

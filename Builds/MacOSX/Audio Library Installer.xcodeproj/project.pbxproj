@@ -2727,7 +2727,7 @@
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PRODUCT_NAME = "Audio Library Installer";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.5;
 				WARNING_CFLAGS = "-Wreorder";
 				ZERO_LINK = NO;
 			};
@@ -2749,7 +2749,7 @@
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PRODUCT_NAME = "Audio Library Installer";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.5;
 				WARNING_CFLAGS = "-Wreorder";
 				ZERO_LINK = NO;
 			};
