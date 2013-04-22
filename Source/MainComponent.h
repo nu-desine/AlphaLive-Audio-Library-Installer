@@ -54,6 +54,8 @@ public:
     
     void buttonClicked (Button *button);
     void run();
+    
+    void setLocalisation();
 
 private:
     //==============================================================================
@@ -69,6 +71,9 @@ private:
     
     ScopedPointer <ProgressBar> progressBar;
     double progress;
+    
+    LocalisedStrings *trans;
+    String currentLanguage;
 };
 
 
