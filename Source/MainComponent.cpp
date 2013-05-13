@@ -327,29 +327,29 @@ void MainContentComponent::run()
             }
             
             
-            File alphaPresetsDir (dataToCopy.getFullPathName() + File::separatorString + "AlphaPresets");
-            File newAlphaPresetsDir (File::getSpecialLocation (File::userDocumentsDirectory).getFullPathName() + 
+            File tutorialProjDir (dataToCopy.getFullPathName() + File::separatorString + "Tutorial Project");
+            File newTutorialProjDir (File::getSpecialLocation (File::userDocumentsDirectory).getFullPathName() + 
                                  File::separatorString +
                                  "AlphaLive Projects" + 
                                  File::separatorString +
-                                 "AlphaPresets");
+                                 "Tutorial Project");
             
-            // Only copy the AlphaPresets project if it doesn't already exist, as if the user already has it they
+            // Only copy the Tutorial Project if it doesn't already exist, as if the user already has it they
             // may have edited it, and copying it would overwrite their changes.
             // Should I be copy the files individually like done with the Audio Library above?
             
-            if (File (newAlphaPresetsDir.getFullPathName() + File::separatorString + "AlphaPresets.alphalive").exists() == false)
+            if (File (newTutorialProjDir.getFullPathName() + File::separatorString + "Tutorial Project.alphalive").exists() == false)
             {
                 {
                     const MessageManagerLock mmLock;
-                    infoLabel->setText(translate("Extracting AlphaPresets files..."), dontSendNotification);
+                    infoLabel->setText(translate("Extracting Tutorial Project files..."), dontSendNotification);
                 }
                 
-                alphaPresetsDir.copyDirectoryTo(newAlphaPresetsDir);
+                tutorialProjDir.copyDirectoryTo(newTutorialProjDir);
             }
             
             
-            alphaPresetsDir.findChildFiles(allFiles, 3, true);
+            tutorialProjDir.findChildFiles(allFiles, 3, true);
             for (int i = 0; i < allFiles.size(); i++)
             {
                 // Increase the extracted size to we can work out the current progress bar value

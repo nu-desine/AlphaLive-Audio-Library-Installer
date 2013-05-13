@@ -25,4 +25,4 @@ countries: ja jpn
 "The files that need installing appear to be missing. If this installer was supplied to you on a CD, please run it directly from the CD. If you downloaded this installer, please run it directly from the downloaded folder." = "インストールに必要なファイルが見つかりません.このインストーラがCDで提供されている場合は、CD上でインストーラを実行してください. インストーラをダウンロードした場合は、ダウンロードしたフォルダ内からインストーラを実行してください."
 "Installation cancelled!" = "インストールをキャンセルしました!"
 "Installation complete!" = "インストールが完了しました!"
-"Extracting AlphaPresets files..." = "ファイルを取り出しています..."
+"Extracting Tutorial Project files..." = "ファイルを取り出しています..."

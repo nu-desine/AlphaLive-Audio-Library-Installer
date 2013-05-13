@@ -10,7 +10,7 @@ For this application to correctly work the files that need to be installed must 
 
 +  Audio Library - "../Data/Audio Library/"
 +  Demo Project - "../Data/Demo Project/"
-+  AlphaPresets - "../Data/AlphaPresets/"
++  Tutorial Project - "../Data/Tutorial Project/"
 
 ## License ##
 
