@@ -28,6 +28,7 @@
  be in the following file hierarchy from the application file:
  - Audio Library - "../Data/Audio Library/"
  - Demo Project - "../Data/Demo Project/"
+ - AlphaPresets - "../Data/AlphaPresets/"
  
   ==============================================================================
 */

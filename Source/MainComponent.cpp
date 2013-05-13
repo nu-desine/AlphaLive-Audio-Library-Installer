@@ -304,7 +304,7 @@ void MainContentComponent::run()
             // may have edited it, and copying it would overwrite their changes.
             // Should I be copy the files individually like done with the Audio Library above?
             
-            if (File (newDemoProjDir.getFullPathName() + File::separatorString + "AlphaPresets.alphalive").exists() == false)
+            if (File (newDemoProjDir.getFullPathName() + File::separatorString + "Demo Project.alphalive").exists() == false)
             {
                 {
                     const MessageManagerLock mmLock;
@@ -316,6 +316,40 @@ void MainContentComponent::run()
             
             
             demoProjDir.findChildFiles(allFiles, 3, true);
+            for (int i = 0; i < allFiles.size(); i++)
+            {
+                // Increase the extracted size to we can work out the current progress bar value
+                extractedSize += allFiles[i].getSize();
+                // Get progress to a value between 0 and 1 (NOT 0 and 100) to update the progress bar correctly
+                progress = (extractedSize * 0.0001)/(totalSize * 0.0001);
+                //sleep the thread here so the progress bar GUI is updated in a noticable manner
+                wait(2);
+            }
+            
+            
+            File alphaPresetsDir (dataToCopy.getFullPathName() + File::separatorString + "AlphaPresets");
+            File newAlphaPresetsDir (File::getSpecialLocation (File::userDocumentsDirectory).getFullPathName() + 
+                                 File::separatorString +
+                                 "AlphaLive Projects" + 
+                                 File::separatorString +
+                                 "AlphaPresets");
+            
+            // Only copy the AlphaPresets project if it doesn't already exist, as if the user already has it they
+            // may have edited it, and copying it would overwrite their changes.
+            // Should I be copy the files individually like done with the Audio Library above?
+            
+            if (File (newAlphaPresetsDir.getFullPathName() + File::separatorString + "AlphaPresets.alphalive").exists() == false)
+            {
+                {
+                    const MessageManagerLock mmLock;
+                    infoLabel->setText(translate("Extracting AlphaPresets files..."), dontSendNotification);
+                }
+                
+                alphaPresetsDir.copyDirectoryTo(newAlphaPresetsDir);
+            }
+            
+            
+            alphaPresetsDir.findChildFiles(allFiles, 3, true);
             for (int i = 0; i < allFiles.size(); i++)
             {
                 // Increase the extracted size to we can work out the current progress bar value
