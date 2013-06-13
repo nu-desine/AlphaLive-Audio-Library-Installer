@@ -211,37 +211,49 @@ void MainContentComponent::run()
     
     while (! threadShouldExit())
     {
-        // === Copy the necessary files ===
+        // Get all needed file paths
         
-        File audioLibraryDir (alphaLiveDirectory.getFullPathName() + 
+        const File audioLibraryDir (alphaLiveDirectory.getFullPathName() + 
                               File::separatorString +
                               "Library" +
                               File::separatorString +
                               "Audio Library");
-        
         if (! audioLibraryDir.isDirectory())
-        {
             audioLibraryDir.createDirectory();
-        }
         
-        File dataToCopy (File::getSpecialLocation (File::currentApplicationFile).getParentDirectory().getParentDirectory().getFullPathName() + File::separatorString + "Data");
+        const File projectsDir (File::getSpecialLocation (File::userDocumentsDirectory).getFullPathName() + 
+                          File::separatorString +
+                          "AlphaLive Projects");
+        if (! projectsDir.isDirectory())
+            projectsDir.createDirectory();
+        
+        const File dataToCopy (File::getSpecialLocation (File::currentApplicationFile).getParentDirectory().getParentDirectory().getFullPathName() + 
+                         File::separatorString + 
+                         "Data");
+        
+        
         
         if (dataToCopy.exists())
         {
+            // Work out the total size of the files being copied,
+            // so we can work out a percentage for the progress bar.
             int totalSize = 0;
             int extractedSize = 0;
             
-            // Work out the total size of the files being copied,
-            // so we can work out a percentage for the progress bar.
             Array<File> allFiles;
             dataToCopy.findChildFiles(allFiles, 3, true);
             for (int i = 0; i < allFiles.size(); i++)
                 totalSize += allFiles[i].getSize();
             allFiles.clear();
             
-            // With the audio library, don't just copy the entire directories (like done below with the Demo Project directory),
-            // incase the user has already installed it and added their own files. Simply copying the directory would replace
-            // any new files, so must copy each file individually.
+            // Don't just copy the entire directories,
+            // incase the user has already installed them and added their own files,
+            // Or modified certain installed files.
+            // Simply copying the directories would replace
+            // any new or modified files, so we must copy each file individually.
+            
+            //====================================================================================================
+            //Install the audio library directory into the AlphaLive/Library directory
             
             Array<File> filesToCopy;
             File audioDir (dataToCopy.getFullPathName() + File::separatorString + "Audio Library");
@@ -293,71 +305,114 @@ void MainContentComponent::run()
                 break;
             }
             
+            //====================================================================================================
+            // Install the demo project into the AlphaLive Projects directory
+            
+            filesToCopy.clear();
             File demoProjDir (dataToCopy.getFullPathName() + File::separatorString + "Demo Project");
-            File newDemoProjDir (File::getSpecialLocation (File::userDocumentsDirectory).getFullPathName() + 
-                                 File::separatorString +
-                                 "AlphaLive Projects" + 
-                                 File::separatorString +
-                                 "Demo Project");
+            demoProjDir.findChildFiles(filesToCopy, 2, true);
+            File newDemoProjDir (projectsDir.getFullPathName() + File::separatorString + "Demo Project");
             
-            // Only copy the Demo Project if it doesn't already exist, as if the user already has it they
-            // may have edited it, and copying it would overwrite their changes.
-            // Should I be copy the files individually like done with the Audio Library above?
-            
-            if (File (newDemoProjDir.getFullPathName() + File::separatorString + "Demo Project.alphalive").exists() == false)
-            {
-                {
-                    const MessageManagerLock mmLock;
-                    infoLabel->setText(translate("Extracting Demo Project files..."), dontSendNotification);
-                }
-                
-                demoProjDir.copyDirectoryTo(newDemoProjDir);
-            }
-            
-            
-            demoProjDir.findChildFiles(allFiles, 3, true);
-            for (int i = 0; i < allFiles.size(); i++)
+            for (int i = 0; i < filesToCopy.size(); i++)
             {
                 // Increase the extracted size to we can work out the current progress bar value
-                extractedSize += allFiles[i].getSize();
+                extractedSize += filesToCopy[i].getSize();
                 // Get progress to a value between 0 and 1 (NOT 0 and 100) to update the progress bar correctly
-                progress = (extractedSize * 0.0001)/(totalSize * 0.0001);
-                //sleep the thread here so the progress bar GUI is updated in a noticable manner
-                wait(2);
+                progress = ((extractedSize * 0.0001)/(totalSize * 0.0001));
+                
+                File newFile (newDemoProjDir.getFullPathName() + 
+                              File::separatorString + 
+                              filesToCopy[i].getRelativePathFrom(demoProjDir));
+                
+                // Only copy the file if it doesn't already exist
+                if (! newFile.exists())
+                {
+                    {
+                        const MessageManagerLock mmLock;
+                        String string (translate("Extracting files...") + "\n" + newFile.getFileName());
+                        infoLabel->setText(string, dontSendNotification);
+                    }
+                    
+                    // If the files parent directory doesn't exist, create it, otherwise the file won't copy.
+                    
+                    bool doesParentExist = newFile.getParentDirectory().isDirectory();
+                    if (doesParentExist == false)
+                    {
+                        File parentDir (newFile.getParentDirectory());
+                        parentDir.createDirectory();
+                    }
+                    
+                    if (threadShouldExit() == true)
+                    {
+                        installationCancelled = true;
+                        break;
+                    }
+                    
+                    filesToCopy[i].copyFileTo(newFile);
+                    
+                }
+            }
+        
+            if (threadShouldExit() == true)
+            {
+                installationCancelled = true;
+                break;
             }
             
+            //====================================================================================================
+            // Install the tutorial project into the AlphaLive Projects directory
             
+            filesToCopy.clear();
             File tutorialProjDir (dataToCopy.getFullPathName() + File::separatorString + "Tutorial Project");
-            File newTutorialProjDir (File::getSpecialLocation (File::userDocumentsDirectory).getFullPathName() + 
-                                 File::separatorString +
-                                 "AlphaLive Projects" + 
-                                 File::separatorString +
-                                 "Tutorial Project");
+            tutorialProjDir.findChildFiles(filesToCopy, 2, true);
+            File newTutorialProjDir (projectsDir.getFullPathName() + File::separatorString + "Tutorial Project");
             
-            // Only copy the Tutorial Project if it doesn't already exist, as if the user already has it they
-            // may have edited it, and copying it would overwrite their changes.
-            // Should I be copy the files individually like done with the Audio Library above?
-            
-            if (File (newTutorialProjDir.getFullPathName() + File::separatorString + "Tutorial Project.alphalive").exists() == false)
-            {
-                {
-                    const MessageManagerLock mmLock;
-                    infoLabel->setText(translate("Extracting Tutorial Project files..."), dontSendNotification);
-                }
-                
-                tutorialProjDir.copyDirectoryTo(newTutorialProjDir);
-            }
-            
-            
-            tutorialProjDir.findChildFiles(allFiles, 3, true);
-            for (int i = 0; i < allFiles.size(); i++)
+            for (int i = 0; i < filesToCopy.size(); i++)
             {
                 // Increase the extracted size to we can work out the current progress bar value
-                extractedSize += allFiles[i].getSize();
+                extractedSize += filesToCopy[i].getSize();
                 // Get progress to a value between 0 and 1 (NOT 0 and 100) to update the progress bar correctly
-                progress = (extractedSize * 0.0001)/(totalSize * 0.0001);
-                //sleep the thread here so the progress bar GUI is updated in a noticable manner
-                wait(2);
+                progress = ((extractedSize * 0.0001)/(totalSize * 0.0001));
+                
+                File newFile (newTutorialProjDir.getFullPathName() + 
+                              File::separatorString + 
+                              filesToCopy[i].getRelativePathFrom(tutorialProjDir));
+                
+                // Only copy the file if it doesn't already exist
+                if (! newFile.exists())
+                {
+                    {
+                        const MessageManagerLock mmLock;
+                        String string (translate("Extracting files...") + "\n" + newFile.getFileName());
+                        infoLabel->setText(string, dontSendNotification);
+                    }
+                    
+                    // If the files parent directory doesn't exist, create it, otherwise the file won't copy.
+                    
+                    bool doesParentExist = newFile.getParentDirectory().isDirectory();
+                    if (doesParentExist == false)
+                    {
+                        File parentDir (newFile.getParentDirectory());
+                        parentDir.createDirectory();
+                    }
+                    
+                    if (threadShouldExit() == true)
+                    {
+                        installationCancelled = true;
+                        break;
+                    }
+                    
+                    filesToCopy[i].copyFileTo(newFile);
+                    
+                }
+            }
+            
+            //====================================================================================================
+            
+            if (threadShouldExit() == true)
+            {
+                installationCancelled = true;
+                break;
             }
             
             
