@@ -48,7 +48,7 @@ MainContentComponent::MainContentComponent () : Thread ("installerThread")
     
     addAndMakeVisible (infoLabel = new Label());
     infoLabel->setJustificationType(Justification::centred);
-    infoLabel->setText(translate("This application will install the AlphaLive Audio Library and Demo Project onto your computer. Please make sure that you have installed AlphaLive before running this installer. Press 'Install' to begin."), 
+    infoLabel->setText(translate("This application will install the AlphaLive Audio Library and Demo Projects onto your computer. Please make sure that you have installed AlphaLive before running this installer. Press 'Install' to begin."), 
                        dontSendNotification);
     
     addAndMakeVisible (installButton = new TextButton(translate("Install")));
@@ -251,6 +251,12 @@ void MainContentComponent::run()
             // Or modified certain installed files.
             // Simply copying the directories would replace
             // any new or modified files, so we must copy each file individually.
+            
+            //TO DO:
+            //The following section contains 3 very similiar sub-sections, which each install a different part.
+            //This could probably be consolidated into a single algorithm that runs 3 times, but has different
+            //filepaths each time.
+            //You would need the following File objects: contentToInstallDir and locationToInstallDir.
             
             //====================================================================================================
             //Install the audio library directory into the AlphaLive/Library directory
