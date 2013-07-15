@@ -10,7 +10,7 @@ countries: ja jpn
 "yes" = "はい"
 "no" = "いいえ"
 "Ok" = "OK"
-"This application will install the AlphaLive Audio Library and Demo Project onto your computer. Please make sure that you have installed AlphaLive before running this installer. Press 'Install' to begin." = "このインストーラは AlphaLive Audio Library 及びデモプロジェクトをインストールします. AlphaLive が起動していないことを確認して、'インストール'をクリックしてください."  
+"This application will install the AlphaLive Audio Library and Demo Projects onto your computer. Please make sure that you have installed AlphaLive before running this installer. Press 'Install' to begin." = "このインストーラは AlphaLive Audio Library 及びデモプロジェクトをインストールします. AlphaLive が起動していないことを確認して、'インストール'をクリックしてください."  
 "Install" = "インストール"
 "Close" = "閉じる"
 "AlphaLive not found!" = "AlphaLiveが見つかりません"
