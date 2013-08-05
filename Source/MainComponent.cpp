@@ -451,6 +451,7 @@ void MainContentComponent::run()
     {
         const MessageManagerLock mmLock;
         infoLabel->setText(translate("Installation complete!"), dontSendNotification);
+        LookAndFeel::getDefaultLookAndFeel().playAlertSound();
         
         closeButton->setVisible(true);
         installButton->setVisible(false);
