@@ -35,6 +35,10 @@
 #include <sys/stat.h>
 #endif
 
+#if JUCE_WINDOWS
+#include <Windows.h>
+#endif
+
 //Dimensions for centre text box
 #define BOX_X getWidth()/10
 #define BOX_Y getHeight()/6
@@ -423,6 +427,9 @@ void MainContentComponent::run()
             //====================================================================================================
             //====================================================================================================
             //NEW - set the installed Demo and Tutorial project files to read-only.
+
+			File demoProjFile (newDemoProjDir.getFullPathName() + File::separatorString + "Demo Project.alphalive");
+            File tutorialProjFile (newTutorialProjDir.getFullPathName() + File::separatorString + "Tutorial Project.alphalive");
             
             #if JUCE_MAC || JUCE_LINUX
             
@@ -430,22 +437,21 @@ void MainContentComponent::run()
             //or use th chmod() function as documented here:
             //http://www.manpagez.com/man/2/chmod/osx-10.4.php
             
-            File demoProjFile (newDemoProjDir.getFullPathName() + File::separatorString + "Demo Project.alphalive");
-            File tutorialProjFile (newTutorialProjDir.getFullPathName() + File::separatorString + "Tutorial Project.alphalive");
-            
             chmod (demoProjFile.getFullPathName().toUTF8(), S_IRUSR | S_IRGRP | S_IROTH);
             chmod (tutorialProjFile.getFullPathName().toUTF8(), S_IRUSR | S_IRGRP | S_IROTH);
             
             #endif
             
             #if JUCE_WINDOWS
-            
-            //How do I do this on Windows?
-            
-            #endif
-            
-            
-            
+
+			//Use the SetFileAttributes() function here like so:
+			//http://msdn.microsoft.com/en-us/library/windows/desktop/aa365535(v=vs.85).aspx
+			//to get more control over editting file permissions, you can use cacls
+
+            SetFileAttributes(demoProjFile.getFullPathName().toUTF8(), FILE_ATTRIBUTE_READONLY);
+			SetFileAttributes(tutorialProjFile.getFullPathName().toUTF8(), FILE_ATTRIBUTE_READONLY);
+
+            #endif   
         }
         else
         {
