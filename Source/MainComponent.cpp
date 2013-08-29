@@ -31,6 +31,10 @@
 #include "MainComponent.h"
 #include "BinaryData.h"
 
+#if JUCE_MAC || JUCE_LINUX
+#include <sys/stat.h>
+#endif
+
 //Dimensions for centre text box
 #define BOX_X getWidth()/10
 #define BOX_Y getHeight()/6
@@ -246,9 +250,8 @@ void MainContentComponent::run()
                 totalSize += allFiles[i].getSize();
             allFiles.clear();
             
-            // Don't just copy the entire directories,
-            // incase the user has already installed them and added their own files,
-            // Or modified certain installed files.
+            // For the audio library don't just copy the entire directories,
+            // incase the user has already installed them and added their own files.
             // Simply copying the directories would replace
             // any new or modified files, so we must copy each file individually.
             
@@ -313,11 +316,17 @@ void MainContentComponent::run()
             
             //====================================================================================================
             // Install the demo project into the AlphaLive Projects directory
+            // NEW to version 1.0.2 - always replace the existing demo project
+            // However still need to copy files one by one so that the progress bar
+            // can update in realtime.
             
             filesToCopy.clear();
             File demoProjDir (dataToCopy.getFullPathName() + File::separatorString + "Demo Project");
             demoProjDir.findChildFiles(filesToCopy, 2, true);
             File newDemoProjDir (projectsDir.getFullPathName() + File::separatorString + "Demo Project");
+            
+            if (newDemoProjDir.exists())
+                newDemoProjDir.deleteRecursively();
             
             for (int i = 0; i < filesToCopy.size(); i++)
             {
@@ -330,33 +339,29 @@ void MainContentComponent::run()
                               File::separatorString + 
                               filesToCopy[i].getRelativePathFrom(demoProjDir));
                 
-                // Only copy the file if it doesn't already exist
-                if (! newFile.exists())
                 {
-                    {
-                        const MessageManagerLock mmLock;
-                        String string (translate("Extracting files...") + "\n" + newFile.getFileName());
-                        infoLabel->setText(string, dontSendNotification);
-                    }
-                    
-                    // If the files parent directory doesn't exist, create it, otherwise the file won't copy.
-                    
-                    bool doesParentExist = newFile.getParentDirectory().isDirectory();
-                    if (doesParentExist == false)
-                    {
-                        File parentDir (newFile.getParentDirectory());
-                        parentDir.createDirectory();
-                    }
-                    
-                    if (threadShouldExit() == true)
-                    {
-                        installationCancelled = true;
-                        break;
-                    }
-                    
-                    filesToCopy[i].copyFileTo(newFile);
-                    
+                    const MessageManagerLock mmLock;
+                    String string (translate("Extracting files...") + "\n" + newFile.getFileName());
+                    infoLabel->setText(string, dontSendNotification);
                 }
+                
+                // If the files parent directory doesn't exist, create it, otherwise the file won't copy.
+                
+                bool doesParentExist = newFile.getParentDirectory().isDirectory();
+                if (doesParentExist == false)
+                {
+                    File parentDir (newFile.getParentDirectory());
+                    parentDir.createDirectory();
+                }
+                
+                if (threadShouldExit() == true)
+                {
+                    installationCancelled = true;
+                    break;
+                }
+                
+                filesToCopy[i].copyFileTo(newFile);
+                
             }
         
             if (threadShouldExit() == true)
@@ -367,11 +372,17 @@ void MainContentComponent::run()
             
             //====================================================================================================
             // Install the tutorial project into the AlphaLive Projects directory
+            // NEW to version 1.0.2 - always replace the existing tutorial project.
+            // However still need to copy files one by one so that the progress bar
+            // can update in realtime.
             
             filesToCopy.clear();
             File tutorialProjDir (dataToCopy.getFullPathName() + File::separatorString + "Tutorial Project");
             tutorialProjDir.findChildFiles(filesToCopy, 2, true);
             File newTutorialProjDir (projectsDir.getFullPathName() + File::separatorString + "Tutorial Project");
+            
+            if (newTutorialProjDir.exists())
+                newTutorialProjDir.deleteRecursively();
             
             for (int i = 0; i < filesToCopy.size(); i++)
             {
@@ -384,42 +395,54 @@ void MainContentComponent::run()
                               File::separatorString + 
                               filesToCopy[i].getRelativePathFrom(tutorialProjDir));
                 
-                // Only copy the file if it doesn't already exist
-                if (! newFile.exists())
                 {
-                    {
-                        const MessageManagerLock mmLock;
-                        String string (translate("Extracting files...") + "\n" + newFile.getFileName());
-                        infoLabel->setText(string, dontSendNotification);
-                    }
-                    
-                    // If the files parent directory doesn't exist, create it, otherwise the file won't copy.
-                    
-                    bool doesParentExist = newFile.getParentDirectory().isDirectory();
-                    if (doesParentExist == false)
-                    {
-                        File parentDir (newFile.getParentDirectory());
-                        parentDir.createDirectory();
-                    }
-                    
-                    if (threadShouldExit() == true)
-                    {
-                        installationCancelled = true;
-                        break;
-                    }
-                    
-                    filesToCopy[i].copyFileTo(newFile);
-                    
+                    const MessageManagerLock mmLock;
+                    String string (translate("Extracting files...") + "\n" + newFile.getFileName());
+                    infoLabel->setText(string, dontSendNotification);
                 }
+                
+                // If the files parent directory doesn't exist, create it, otherwise the file won't copy.
+                
+                bool doesParentExist = newFile.getParentDirectory().isDirectory();
+                if (doesParentExist == false)
+                {
+                    File parentDir (newFile.getParentDirectory());
+                    parentDir.createDirectory();
+                }
+                
+                if (threadShouldExit() == true)
+                {
+                    installationCancelled = true;
+                    break;
+                }
+                
+                filesToCopy[i].copyFileTo(newFile);
+                
             }
             
             //====================================================================================================
+            //====================================================================================================
+            //NEW - set the installed Demo and Tutorial project files to read-only.
             
-            if (threadShouldExit() == true)
-            {
-                installationCancelled = true;
-                break;
-            }
+            #if JUCE_MAC || JUCE_LINUX
+            
+            //To set the file permissions to read only, you can use the command chmod 555 in terminal
+            //or use th chmod() function as documented here:
+            //http://www.manpagez.com/man/2/chmod/osx-10.4.php
+            
+            File demoProjFile (newDemoProjDir.getFullPathName() + File::separatorString + "Demo Project.alphalive");
+            File tutorialProjFile (newTutorialProjDir.getFullPathName() + File::separatorString + "Tutorial Project.alphalive");
+            
+            chmod (demoProjFile.getFullPathName().toUTF8(), S_IRUSR | S_IRGRP | S_IROTH);
+            chmod (tutorialProjFile.getFullPathName().toUTF8(), S_IRUSR | S_IRGRP | S_IROTH);
+            
+            #endif
+            
+            #if JUCE_WINDOWS
+            
+            //How do I do this on Windows?
+            
+            #endif
             
             
             
