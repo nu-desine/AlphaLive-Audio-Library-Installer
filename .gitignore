@@ -8,3 +8,6 @@ Builds/MacOSX/Audio Library Installer.xcodeproj/Liam.pbxuser
 Builds/VisualStudio2010/Release/
 Builds/VisualStudio2010/Data/
 Builds/MacOSX/build
+Builds/VisualStudio2019/.vs/
+Builds/VisualStudio2019/x64/
+Builds/VisualStudio2019/Audio Library Installer_App.vcxproj.user
