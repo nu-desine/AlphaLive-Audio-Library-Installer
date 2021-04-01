@@ -56,7 +56,7 @@ MainContentComponent::MainContentComponent () : Thread ("installerThread")
     
     addAndMakeVisible (infoLabel = new Label());
     infoLabel->setJustificationType(Justification::centred);
-    infoLabel->setText(translate("This application will install the AlphaLive Audio Library and Demo Projects onto your computer. Please make sure that you have installed AlphaLive before running this installer. Press 'Install' to begin."), 
+    infoLabel->setText(translate("This application will install the AlphaLive Audio Library and Demo Projects onto your computer. Please make sure that you have installed AlphaLive before running this installer. Press 'Install' to begin - when prompted please first select the 'Data' directory from this Audio Library Installer package."),
                        dontSendNotification);
     
     addAndMakeVisible (installButton = new TextButton(translate("Install")));
@@ -187,13 +187,42 @@ void MainContentComponent::buttonClicked (Button *button)
 //            }
 //            else
 //                continueInstallation = false;
-            
+        
         } //if (! alphaLiveDirectory.isDirectory())
+        
+        if (continueInstallation && manuallyLocateDataDir)
+        {
+            FileChooser myChooser (translate("Please select the 'Data' directory from this Audio Library Installer package..."), File::getSpecialLocation (File::currentApplicationFile).getParentDirectory().getParentDirectory());
+            
+            if (myChooser.browseForDirectory() == true)
+            {
+                //check if the user has selected the correct directory....
+                
+                File audioLibDir (myChooser.getResult().getFullPathName() + File::getSeparatorString() + "Audio Library");
+            
+                if (myChooser.getResult().getFileName() == "Data" && audioLibDir.exists())
+                {
+                    // Presume that this is the Data directory
+                    dataDirectory = myChooser.getResult();
+                    continueInstallation = true;
+                }
+                else
+                {
+                    AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
+                                                      translate("Error!"),
+                                                      translate("The selected directory is not the 'Data' directory from this Audio Library Installer package."));
+                    continueInstallation = false;
+                }
+            }
+            else
+                continueInstallation = false;
+        }
         
         if (continueInstallation == true)
         {
             startThread();
         }
+        
     }
     
     else if (button == closeButton)
@@ -246,11 +275,7 @@ void MainContentComponent::run()
         if (! projectsDir.isDirectory())
             projectsDir.createDirectory();
         
-        const File dataToCopy (File::getSpecialLocation (File::currentApplicationFile).getParentDirectory().getParentDirectory().getFullPathName() + 
-                         File::getSeparatorString() +
-                         "Data");
-        
-        
+        const File dataToCopy = dataDirectory;
         
         if (dataToCopy.exists())
         {
@@ -507,7 +532,7 @@ void MainContentComponent::setLocalisation()
     static String countryCode = SystemStats::getDisplayLanguage();
     std::cout << "Language: " << countryCode << std::endl;
     
-    File dataDir = File::getSpecialLocation (File::currentApplicationFile).getParentDirectory().getParentDirectory().getFullPathName() + File::getSeparatorString() + "Data";
+    File dataDir = dataDirectory;
     
     //We may need to find suitable fonst that exists on the current system
     //for languages such as Chinese, Japanese, and Korean.

@@ -69,12 +69,21 @@ private:
     
     //alphaLiveDirectory is the directory where all the supporting app files are stored
     File alphaLiveDirectory;
+    //dataDirectory is the 'Data' Folder containing all the files that need installing by this app
+    File dataDirectory;
     
     ScopedPointer <ProgressBar> progressBar;
     double progress;
     
     LocalisedStrings *trans;
     String currentLanguage;
+    
+    //It appears that, on macOS, if running an app flagged as being from an 'unidentifed' developer,
+    //the app won't happily access files / folders relative from File::currentApplicationFile, which
+    //we would ideally like to do here to find the 'Data' directory containing all the files
+    //that need installing with this app. Therefore, in case of this situation, we need to instead ask
+    //the user to manually locate the 'Data' directory for this app to always successfully work.
+    const bool manuallyLocateDataDir = true;
 };
 
 
