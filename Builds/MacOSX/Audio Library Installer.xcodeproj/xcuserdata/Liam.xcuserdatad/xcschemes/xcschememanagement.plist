@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Audio Library Installer.xcscheme</key>
+		<key>Audio Library Installer - App.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,7 +12,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>FE23EAAB50F76481C7E7E373</key>
+		<key>7C676BB94371CAD42195ED50</key>
 		<dict>
 			<key>primary</key>
 			<true/>
