@@ -5,10 +5,16 @@
               companyName="nu desine" jucerFormatVersion="1">
   <MAINGROUP id="VboiF0" name="Audio Library Installer">
     <GROUP id="{BEDDE914-944A-EC99-AC90-F1126645C289}" name="Source">
+      <FILE id="fkt7ye" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="UtUOzG" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="eq7JOe" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>
-      <FILE id="UtUOzG" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
-      <FILE id="fkt7ye" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="cAiH2W" name="AlphaLiveLookandFeel.h" compile="0" resource="0"
+            file="Source/AlphaLiveLookandFeel.h"/>
+      <FILE id="QpP3eJ" name="AlphaLiveLookandFeel.cpp" compile="1" resource="0"
+            file="Source/AlphaLiveLookandFeel.cpp"/>
+      <FILE id="BAWJmM" name="BinaryData.h" compile="0" resource="0" file="Source/BinaryData.h"/>
+      <FILE id="z0oCjC" name="BinaryData.cpp" compile="1" resource="0" file="Source/BinaryData.cpp"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>

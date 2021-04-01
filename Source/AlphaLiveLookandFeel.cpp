@@ -368,27 +368,27 @@ void AlphaLiveLookandFeel::drawButtonBackground (Graphics& g,
 	
 }
 
-Font AlphaLiveLookandFeel::getTextButtonFont (TextButton& button)
+Font AlphaLiveLookandFeel::getTextButtonFont (TextButton &, int buttonHeight)
 {
-    return button.getFont();
+    return Font (jmin (15.0f, buttonHeight * 0.6f));
 }
 
 void AlphaLiveLookandFeel::drawButtonText (Graphics& g, TextButton& button,
                                   bool isMouseOverButton, bool isButtonDown)
 {
-    Font font (getTextButtonFont (button));
+    Font font (getTextButtonFont (button, button.getHeight()));
     g.setFont (10);
     g.setColour (button.findColour (button.getToggleState() ? TextButton::textColourOnId
-									: TextButton::textColourOffId)
-				 .withMultipliedAlpha (button.isEnabled() ? 1.0f : 0.5f));
-	
+                                    : TextButton::textColourOffId)
+                 .withMultipliedAlpha (button.isEnabled() ? 1.0f : 0.5f));
+    
     const int yIndent = jmin (4, button.proportionOfHeight (0.3f));
     const int cornerSize = jmin (button.getHeight(), button.getWidth()) / 2;
-	
+    
     const int fontHeight = roundToInt (font.getHeight() * 0.3f);
     const int leftIndent  = jmin (fontHeight, 2 + cornerSize / (button.isConnectedOnLeft() ? 4 : 2));
     const int rightIndent = jmin (fontHeight, 2 + cornerSize / (button.isConnectedOnRight() ? 4 : 2));
-	
+    
     g.drawFittedText (button.getButtonText(),
                       leftIndent,
                       yIndent,

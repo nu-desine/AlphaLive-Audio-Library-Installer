@@ -445,10 +445,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Main.cpp">
+      <Filter>Audio Library Installer\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\MainComponent.cpp">
       <Filter>Audio Library Installer\Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Main.cpp">
+    <ClCompile Include="..\..\Source\AlphaLiveLookandFeel.cpp">
+      <Filter>Audio Library Installer\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\BinaryData.cpp">
       <Filter>Audio Library Installer\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
@@ -2506,6 +2512,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\MainComponent.h">
+      <Filter>Audio Library Installer\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AlphaLiveLookandFeel.h">
+      <Filter>Audio Library Installer\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\BinaryData.h">
       <Filter>Audio Library Installer\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">

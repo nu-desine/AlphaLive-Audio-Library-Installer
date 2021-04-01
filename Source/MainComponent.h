@@ -67,6 +67,7 @@ private:
     ScopedPointer <Label> infoLabel;
     ScopedPointer <TextButton> installButton, closeButton, cancelButton;
     
+    //alphaLiveDirectory is the directory where all the supporting app files are stored
     File alphaLiveDirectory;
     
     ScopedPointer <ProgressBar> progressBar;

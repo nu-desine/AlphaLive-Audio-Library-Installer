@@ -129,55 +129,66 @@ void MainContentComponent::buttonClicked (Button *button)
     {
         // === Locate the AlphaLive directory ===
         
-        alphaLiveDirectory = File::getSpecialLocation (File::globalApplicationsDirectory).getFullPathName() +
-                                 File::separatorString +
-                                 "AlphaLive";
+        alphaLiveDirectory = File::getSpecialLocation (File::commonDocumentsDirectory).getFullPathName() +
+                            File::getSeparatorString() +
+                            "AlphaLive";
         
         bool continueInstallation = true;
         
         if (! alphaLiveDirectory.isDirectory())
         {
-            //If can't be found, ask user to manually locate it
+            //NEW - quit installation
+            AlertWindow::showMessageBox(AlertWindow::WarningIcon,
+                                        "AlphaLive not found!",
+                                        "The AlphaLive folder can not be found on your computer. Please make sure that you have installed AlphaLive.");
             
-            bool userSelection = AlertWindow::showOkCancelBox(AlertWindow::WarningIcon, 
-                                                              translate("AlphaLive not found!"), 
-                                                              translate("The AlphaLive folder can not be found on your computer. Please manually locate it."));
-            if (userSelection == true)
-            {
-                FileChooser myChooser (translate("Please select the AlphaLive directory..."),
-                                       File::getSpecialLocation (File::globalApplicationsDirectory));
-                
-                if (myChooser.browseForDirectory() == true)
-                {
-                    // Perform some basic check to see if this is the AlphaLive directory
-                    
-                    #if JUCE_MAC || JUCE_LINUX
-                    File alphaLiveApp (myChooser.getResult().getFullPathName() + File::separatorString + "AlphaLive.app");
-                    #endif
-                    #if JUCE_WINDOWS
-                    File alphaLiveApp (myChooser.getResult().getFullPathName() + File::separatorString + "AlphaLive.exe");
-                    #endif
-                    
-                    if (alphaLiveApp.exists())
-                    {
-                        // Presume that this is the AlphaLive directory
-                        alphaLiveDirectory = myChooser.getResult();
-                    }
-                    else
-                    {
-                        AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
-                                                          translate("Error!"),
-                                                          translate("The selected directory does not contain the AlphaLive application. Please try again."));
-                        continueInstallation = false;
-                    }
-                }
-                else
-                    continueInstallation = false;
-            }
-            else
-                continueInstallation = false;
-        }
-        
+            continueInstallation = false;
+            
+            //OLD (can't do this now as the AlphaLive directory
+            //is no longer portable and must live in a specific location):
+            //If can't be found, ask user to manually locate it
+//
+//            bool userSelection = AlertWindow::showOkCancelBox(AlertWindow::WarningIcon,
+//                                                              translate("AlphaLive not found!"),
+//                                                              translate("The AlphaLive folder can not be found on your computer. Please manually locate it."));
+//            if (userSelection == true)
+//            {
+//                FileChooser myChooser (translate("Please select the AlphaLive directory..."),
+//                                       File::getSpecialLocation (File::globalApplicationsDirectory));
+//
+//                if (myChooser.browseForDirectory() == true)
+//                {
+//                    // Perform some basic check to see if this is the AlphaLive directory
+//                    //FIXME: this is no longer a valid check of the AlphaLive directory,
+//                    //as the app file no longer lives here
+//
+//                    #if JUCE_MAC || JUCE_LINUX
+//                    File alphaLiveApp (myChooser.getResult().getFullPathName() + File::getSeparatorString() + "AlphaLive.app");
+//                    #endif
+//                    #if JUCE_WINDOWS
+//                    File alphaLiveApp (myChooser.getResult().getFullPathName() + File::getSeparatorString() + "AlphaLive.exe");
+//                    #endif
+//
+//                    if (alphaLiveApp.exists())
+//                    {
+//                        // Presume that this is the AlphaLive directory
+//                        alphaLiveDirectory = myChooser.getResult();
+//                    }
+//                    else
+//                    {
+//                        AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
+//                                                          translate("Error!"),
+//                                                          translate("The selected directory is not the correct AlphaLive directory. Please try again."));
+//                        continueInstallation = false;
+//                    }
+//                }
+//                else
+//                    continueInstallation = false;
+//            }
+//            else
+//                continueInstallation = false;
+            
+        } //if (! alphaLiveDirectory.isDirectory())
         
         if (continueInstallation == true)
         {
@@ -222,21 +233,21 @@ void MainContentComponent::run()
         // Get all needed file paths
         
         const File audioLibraryDir (alphaLiveDirectory.getFullPathName() + 
-                              File::separatorString +
+                              File::getSeparatorString() +
                               "Library" +
-                              File::separatorString +
+                              File::getSeparatorString() +
                               "Audio Library");
         if (! audioLibraryDir.isDirectory())
             audioLibraryDir.createDirectory();
         
         const File projectsDir (File::getSpecialLocation (File::userDocumentsDirectory).getFullPathName() + 
-                          File::separatorString +
+                          File::getSeparatorString() +
                           "AlphaLive Projects");
         if (! projectsDir.isDirectory())
             projectsDir.createDirectory();
         
         const File dataToCopy (File::getSpecialLocation (File::currentApplicationFile).getParentDirectory().getParentDirectory().getFullPathName() + 
-                         File::separatorString + 
+                         File::getSeparatorString() +
                          "Data");
         
         
@@ -269,7 +280,7 @@ void MainContentComponent::run()
             //Install the audio library directory into the AlphaLive/Library directory
             
             Array<File> filesToCopy;
-            File audioDir (dataToCopy.getFullPathName() + File::separatorString + "Audio Library");
+            File audioDir (dataToCopy.getFullPathName() + File::getSeparatorString() + "Audio Library");
             audioDir.findChildFiles(filesToCopy, 2, true);
             
             for (int i = 0; i < filesToCopy.size(); i++)
@@ -280,7 +291,7 @@ void MainContentComponent::run()
                 progress = ((extractedSize * 0.0001)/(totalSize * 0.0001));
                 
                 File newFile (audioLibraryDir.getFullPathName() + 
-                              File::separatorString + 
+                              File::getSeparatorString() +
                               filesToCopy[i].getRelativePathFrom(audioDir));
                 
                 // Only copy the file if it doesn't already exist
@@ -325,9 +336,9 @@ void MainContentComponent::run()
             // can update in realtime.
             
             filesToCopy.clear();
-            File demoProjDir (dataToCopy.getFullPathName() + File::separatorString + "Demo Project");
+            File demoProjDir (dataToCopy.getFullPathName() + File::getSeparatorString() + "Demo Project");
             demoProjDir.findChildFiles(filesToCopy, 2, true);
-            File newDemoProjDir (projectsDir.getFullPathName() + File::separatorString + "Demo Project");
+            File newDemoProjDir (projectsDir.getFullPathName() + File::getSeparatorString() + "Demo Project");
             
             if (newDemoProjDir.exists())
                 newDemoProjDir.deleteRecursively();
@@ -340,7 +351,7 @@ void MainContentComponent::run()
                 progress = ((extractedSize * 0.0001)/(totalSize * 0.0001));
                 
                 File newFile (newDemoProjDir.getFullPathName() + 
-                              File::separatorString + 
+                              File::getSeparatorString() +
                               filesToCopy[i].getRelativePathFrom(demoProjDir));
                 
                 {
@@ -381,9 +392,9 @@ void MainContentComponent::run()
             // can update in realtime.
             
             filesToCopy.clear();
-            File tutorialProjDir (dataToCopy.getFullPathName() + File::separatorString + "Tutorial Project");
+            File tutorialProjDir (dataToCopy.getFullPathName() + File::getSeparatorString() + "Tutorial Project");
             tutorialProjDir.findChildFiles(filesToCopy, 2, true);
-            File newTutorialProjDir (projectsDir.getFullPathName() + File::separatorString + "Tutorial Project");
+            File newTutorialProjDir (projectsDir.getFullPathName() + File::getSeparatorString() + "Tutorial Project");
             
             if (newTutorialProjDir.exists())
                 newTutorialProjDir.deleteRecursively();
@@ -396,7 +407,7 @@ void MainContentComponent::run()
                 progress = ((extractedSize * 0.0001)/(totalSize * 0.0001));
                 
                 File newFile (newTutorialProjDir.getFullPathName() + 
-                              File::separatorString + 
+                              File::getSeparatorString() +
                               filesToCopy[i].getRelativePathFrom(tutorialProjDir));
                 
                 {
@@ -428,8 +439,8 @@ void MainContentComponent::run()
             //====================================================================================================
             //NEW - set the installed Demo and Tutorial project files to read-only.
 
-			File demoProjFile (newDemoProjDir.getFullPathName() + File::separatorString + "Demo Project.alphalive");
-            File tutorialProjFile (newTutorialProjDir.getFullPathName() + File::separatorString + "Tutorial Project.alphalive");
+			File demoProjFile (newDemoProjDir.getFullPathName() + File::getSeparatorString() + "Demo Project.alphalive");
+            File tutorialProjFile (newTutorialProjDir.getFullPathName() + File::getSeparatorString() + "Tutorial Project.alphalive");
             
             #if JUCE_MAC || JUCE_LINUX
             
@@ -496,7 +507,7 @@ void MainContentComponent::setLocalisation()
     static String countryCode = SystemStats::getDisplayLanguage();
     std::cout << "Language: " << countryCode << std::endl;
     
-    File dataDir = File::getSpecialLocation (File::currentApplicationFile).getParentDirectory().getParentDirectory().getFullPathName() + File::separatorString + "Data";
+    File dataDir = File::getSpecialLocation (File::currentApplicationFile).getParentDirectory().getParentDirectory().getFullPathName() + File::getSeparatorString() + "Data";
     
     //We may need to find suitable fonst that exists on the current system
     //for languages such as Chinese, Japanese, and Korean.
@@ -509,11 +520,11 @@ void MainContentComponent::setLocalisation()
     
     if (countryCode == "ja" || countryCode == "jpn") //japanese
     {
-        File transFile (dataDir.getFullPathName() + File::separatorString + "trans_ja");
+        File transFile (dataDir.getFullPathName() + File::getSeparatorString() + "trans_ja");
         
         if (transFile.exists())
         {
-            trans = new LocalisedStrings (transFile);
+            trans = new LocalisedStrings (transFile, false);
             LocalisedStrings::setCurrentMappings(trans);
             
             String fontToUse = "Arial Unicode MS"; // available on OSX 10.5 and above
@@ -538,11 +549,11 @@ void MainContentComponent::setLocalisation()
     }
     else if (countryCode == "zh" || countryCode == "zho" || countryCode == "zh-Hant" || countryCode == "zh-Hans") //chinese. do i need the first two?
     {
-        File transFile (dataDir.getFullPathName() + File::separatorString + "trans_zh");
+        File transFile (dataDir.getFullPathName() + File::getSeparatorString() + "trans_zh");
         
         if (transFile.exists())
         {
-            trans = new LocalisedStrings (transFile);
+            trans = new LocalisedStrings (transFile, false);
             LocalisedStrings::setCurrentMappings(trans);
             
             String fontToUse = "Arial Unicode MS"; // available on OSX 10.5 and above
@@ -567,11 +578,11 @@ void MainContentComponent::setLocalisation()
     }
     else if (countryCode == "ko" || countryCode == "kor") //Korean
     {
-        File transFile (dataDir.getFullPathName() + File::separatorString + "trans_ko");
+        File transFile (dataDir.getFullPathName() + File::getSeparatorString() + "trans_ko");
         
         if (transFile.exists())
         {
-            trans = new LocalisedStrings (transFile);
+            trans = new LocalisedStrings (transFile, false);
             LocalisedStrings::setCurrentMappings(trans);
             
             String fontToUse = "AppleMyungjo"; // available on OSX 10.5 and above
