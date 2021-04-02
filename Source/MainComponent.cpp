@@ -129,7 +129,7 @@ void MainContentComponent::buttonClicked (Button *button)
     {
         // === Locate the AlphaLive directory ===
         
-        alphaLiveDirectory = File::getSpecialLocation (File::commonDocumentsDirectory).getFullPathName() +
+        alphaLiveDirectory = File::getSpecialLocation (File::globalApplicationsDirectory).getFullPathName() +
                             File::getSeparatorString() +
                             "AlphaLive";
         
@@ -137,56 +137,12 @@ void MainContentComponent::buttonClicked (Button *button)
         
         if (! alphaLiveDirectory.isDirectory())
         {
-            //NEW - quit installation
+            //cancel installation
             AlertWindow::showMessageBox(AlertWindow::WarningIcon,
                                         "AlphaLive not found!",
                                         "The AlphaLive folder can not be found on your computer. Please make sure that you have installed AlphaLive.");
             
             continueInstallation = false;
-            
-            //OLD (can't do this now as the AlphaLive directory
-            //is no longer portable and must live in a specific location):
-            //If can't be found, ask user to manually locate it
-//
-//            bool userSelection = AlertWindow::showOkCancelBox(AlertWindow::WarningIcon,
-//                                                              translate("AlphaLive not found!"),
-//                                                              translate("The AlphaLive folder can not be found on your computer. Please manually locate it."));
-//            if (userSelection == true)
-//            {
-//                FileChooser myChooser (translate("Please select the AlphaLive directory..."),
-//                                       File::getSpecialLocation (File::globalApplicationsDirectory));
-//
-//                if (myChooser.browseForDirectory() == true)
-//                {
-//                    // Perform some basic check to see if this is the AlphaLive directory
-//                    //FIXME: this is no longer a valid check of the AlphaLive directory,
-//                    //as the app file no longer lives here
-//
-//                    #if JUCE_MAC || JUCE_LINUX
-//                    File alphaLiveApp (myChooser.getResult().getFullPathName() + File::getSeparatorString() + "AlphaLive.app");
-//                    #endif
-//                    #if JUCE_WINDOWS
-//                    File alphaLiveApp (myChooser.getResult().getFullPathName() + File::getSeparatorString() + "AlphaLive.exe");
-//                    #endif
-//
-//                    if (alphaLiveApp.exists())
-//                    {
-//                        // Presume that this is the AlphaLive directory
-//                        alphaLiveDirectory = myChooser.getResult();
-//                    }
-//                    else
-//                    {
-//                        AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
-//                                                          translate("Error!"),
-//                                                          translate("The selected directory is not the correct AlphaLive directory. Please try again."));
-//                        continueInstallation = false;
-//                    }
-//                }
-//                else
-//                    continueInstallation = false;
-//            }
-//            else
-//                continueInstallation = false;
         
         } //if (! alphaLiveDirectory.isDirectory())
         

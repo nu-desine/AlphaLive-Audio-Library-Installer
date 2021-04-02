@@ -78,10 +78,11 @@ private:
     LocalisedStrings *trans;
     String currentLanguage;
     
-    //It appears that, on macOS, if running an app flagged as being from an 'unidentifed' developer,
-    //the app won't happily access files / folders relative from File::currentApplicationFile, which
-    //we would ideally like to do here to find the 'Data' directory containing all the files
-    //that need installing with this app. Therefore, in case of this situation, we need to instead ask
+    //Can't use File::currentApplicationFile or File::currentExecutableFile here, as on macOS
+    //if the app is flagged as being from an 'unidentified' developer (which it currently
+    //will be) then the app may actually be run from a different location (/private/var/folders/)
+    //meaning these file locations won't be what we expect and cause incorrect file access!
+    //Therefore, in case of this situation, we need to instead ask
     //the user to manually locate the 'Data' directory for this app to always successfully work.
     const bool manuallyLocateDataDir = true;
 };
