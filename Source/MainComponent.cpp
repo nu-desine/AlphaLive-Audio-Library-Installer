@@ -55,9 +55,17 @@ MainContentComponent::MainContentComponent () : Thread ("installerThread")
     backgroundImage = ImageCache::getFromMemory(BinaryData::background_png, BinaryData::background_pngSize);
     
     addAndMakeVisible (infoLabel = new Label());
-    infoLabel->setJustificationType(Justification::centred);
-    infoLabel->setText(translate("This application will install the AlphaLive Audio Library and Demo Projects onto your computer. Please make sure that you have installed AlphaLive before running this installer. Press 'Install' to begin - when prompted please first select the 'Data' directory from this Audio Library Installer package."),
-                       dontSendNotification);
+    infoLabel->setJustificationType(Justification::centredTop);
+    Font newFont(labelFontSize);
+    infoLabel->setFont (newFont);
+    
+    String infoString = String();
+    infoString += translate("IMPORTANT NOTICE:\n\n");
+    infoString += translate("In order to install the AlphaLive Audio Library and demo projects you need to select the 'Data' folder from within the downloaded 'Audio Library Installer v1_1_0' folder after pressing the 'Install' button below.\n\n");
+    infoString += translate("On pressing 'Install' you will see a file browser window - please navigate to the 'Audio Library Installer v1_1_0' folder that you have downloaded.\n\n");
+    infoString += translate("Once you have selected the 'Data' folder, just press 'Open' on the bottom right of the file browser window and the Audio Library installation should run.");
+    
+    infoLabel->setText(infoString, dontSendNotification);
     
     addAndMakeVisible (installButton = new TextButton(translate("Install")));
     installButton->addListener(this);
@@ -105,7 +113,8 @@ void MainContentComponent::paint (Graphics& g)
 
 void MainContentComponent::resized()
 {
-    infoLabel->setBounds(BOX_X, BOX_Y, BOX_W, BOX_H);
+    int border = 5;
+    infoLabel->setBounds(BOX_X, BOX_Y + border, BOX_W, BOX_H);
     installButton->setBounds((BOX_X + BOX_W) - 105,
                             (BOX_Y + BOX_H) - 55,
                             45,
@@ -525,6 +534,7 @@ void MainContentComponent::setLocalisation()
             lookAndFeel.setDefaultSansSerifTypefaceName(fontToUse);
             
             currentLanguage = "Japanese";
+            labelFontSize = 14;
         }
         
     }
@@ -555,6 +565,7 @@ void MainContentComponent::setLocalisation()
             lookAndFeel.setDefaultSansSerifTypefaceName(fontToUse);
             
             currentLanguage = "Chinese";
+            labelFontSize = 14;
         }
     }
     else if (countryCode == "ko" || countryCode == "kor") //Korean
@@ -576,6 +587,7 @@ void MainContentComponent::setLocalisation()
             lookAndFeel.setDefaultSansSerifTypefaceName(fontToUse);
             
             currentLanguage = "Korean";
+            labelFontSize = 14;
         }
     }
     else //english
@@ -583,6 +595,7 @@ void MainContentComponent::setLocalisation()
         LocalisedStrings::setCurrentMappings(0);
         
         currentLanguage = "English";
+        labelFontSize = 12;
     }
     
 }

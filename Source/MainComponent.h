@@ -85,6 +85,8 @@ private:
     //Therefore, in case of this situation, we need to instead ask
     //the user to manually locate the 'Data' directory for this app to always successfully work.
     const bool manuallyLocateDataDir = true;
+    
+    int labelFontSize;
 };
 
 
